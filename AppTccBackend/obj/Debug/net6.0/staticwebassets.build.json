@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "oumINnhp6L/X9uF+m3D60AcT1uaexu6H/zfMNyABQBc=",
+  "Source": "AppTccBackend",
+  "BasePath": "_content/AppTccBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
