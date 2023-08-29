@@ -1,4 +1,8 @@
 using AppTccBackend.Data;
+using AppTccBackend.Data.Repositories;
+using AppTccBackend.Data.Repositories.Interfaces;
+using AppTccBackend.Services.Interfaces;
+using AppTccBackend.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +18,19 @@ builder.Services.AddEntityFrameworkNpgsql()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<IPacienteService, PacienteService>();
+
+builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
+builder.Services.AddScoped<IMedicoService, MedicoService>();
+
+builder.Services.AddScoped<ILoginService, LoginService>();
+
+
 
 var app = builder.Build();
 

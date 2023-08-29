@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppTccBackend.Migrations
 {
     [DbContext(typeof(ApiContexto))]
-    [Migration("20230823230923_login3")]
-    partial class login3
+    [Migration("20230826061004_teste2")]
+    partial class teste2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,11 @@ namespace AppTccBackend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AppTccBackend.Models.MedicaoModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Medicao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("DataMedicao")
                         .HasColumnType("timestamp with time zone");
@@ -42,8 +40,8 @@ namespace AppTccBackend.Migrations
                     b.Property<int>("Glicemia")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PressaoDiastolica")
                         .HasColumnType("integer");
@@ -55,20 +53,14 @@ namespace AppTccBackend.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("Medicao");
+                    b.ToTable("Medicoes");
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.MedicoModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Crm")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp with time zone");
@@ -93,77 +85,49 @@ namespace AppTccBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Tipo")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TipoUsuario")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Medico");
+                    b.ToTable("Usuarios");
+
+                    b.HasDiscriminator<int>("TipoUsuario");
+
+                    b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.PacienteModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Medico", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasBaseType("AppTccBackend.Models.Usuario");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DataNascimento")
+                    b.Property<string>("Crm")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasDiscriminator().HasValue(0);
+                });
 
-                    b.Property<int?>("MedicoId")
-                        .IsRequired()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("AppTccBackend.Models.Paciente", b =>
+                {
+                    b.HasBaseType("AppTccBackend.Models.Usuario");
 
-                    b.Property<string>("Nome")
+                    b.Property<Guid?>("MedicoId")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sexo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                        .HasColumnType("uuid");
 
                     b.HasIndex("MedicoId");
 
-                    b.ToTable("Paciente");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.UsuarioModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Medicao", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuario");
-                });
-
-            modelBuilder.Entity("AppTccBackend.Models.MedicaoModel", b =>
-                {
-                    b.HasOne("AppTccBackend.Models.PacienteModel", "Paciente")
-                        .WithMany("Medicao")
+                    b.HasOne("AppTccBackend.Models.Paciente", "Paciente")
+                        .WithMany("Medicoes")
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -171,9 +135,9 @@ namespace AppTccBackend.Migrations
                     b.Navigation("Paciente");
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.PacienteModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Paciente", b =>
                 {
-                    b.HasOne("AppTccBackend.Models.MedicoModel", "Medico")
+                    b.HasOne("AppTccBackend.Models.Medico", "Medico")
                         .WithMany("Pacientes")
                         .HasForeignKey("MedicoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -182,14 +146,14 @@ namespace AppTccBackend.Migrations
                     b.Navigation("Medico");
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.MedicoModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Medico", b =>
                 {
                     b.Navigation("Pacientes");
                 });
 
-            modelBuilder.Entity("AppTccBackend.Models.PacienteModel", b =>
+            modelBuilder.Entity("AppTccBackend.Models.Paciente", b =>
                 {
-                    b.Navigation("Medicao");
+                    b.Navigation("Medicoes");
                 });
 #pragma warning restore 612, 618
         }

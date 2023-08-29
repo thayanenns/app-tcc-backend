@@ -3,6 +3,7 @@ using System;
 using AppTccBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppTccBackend.Migrations
 {
     [DbContext(typeof(ApiContexto))]
-    partial class ApiContextoModelSnapshot : ModelSnapshot
+    [Migration("20230826055337_ajustandoEstruturaNovamente2")]
+    partial class ajustandoEstruturaNovamente2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,14 +88,11 @@ namespace AppTccBackend.Migrations
                     b.Property<int>("Tipo")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TipoUsuario")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
 
-                    b.HasDiscriminator<int>("TipoUsuario");
+                    b.HasDiscriminator<int>("Tipo");
 
                     b.UseTphMappingStrategy();
                 });
@@ -105,7 +105,7 @@ namespace AppTccBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasDiscriminator().HasValue(0);
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("AppTccBackend.Models.Paciente", b =>
@@ -113,11 +113,12 @@ namespace AppTccBackend.Migrations
                     b.HasBaseType("AppTccBackend.Models.Usuario");
 
                     b.Property<Guid?>("MedicoId")
+                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.HasIndex("MedicoId");
 
-                    b.HasDiscriminator().HasValue(1);
+                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("AppTccBackend.Models.Medicao", b =>
@@ -135,7 +136,9 @@ namespace AppTccBackend.Migrations
                 {
                     b.HasOne("AppTccBackend.Models.Medico", "Medico")
                         .WithMany("Pacientes")
-                        .HasForeignKey("MedicoId");
+                        .HasForeignKey("MedicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Medico");
                 });

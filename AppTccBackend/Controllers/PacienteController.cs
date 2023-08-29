@@ -1,86 +1,150 @@
 ﻿using AppTccBackend.Data;
 using AppTccBackend.Models;
+using AppTccBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class PacienteController : ControllerBase
+namespace AppTccBackend.Controllers
 {
-    private readonly ApiContexto _contexto;
-
-    public PacienteController(ApiContexto contexto)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PacienteController : ControllerBase
     {
-        _contexto = contexto;
-    }
+        private readonly IPacienteService _pacienteService;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<PacienteModel>>> ObterPacientes()
-    {
-        return await _contexto.Paciente.ToListAsync();
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteModel>> ObterPacientePorId(int id)
-    {
-        var paciente = await _contexto.Paciente.FindAsync(id);
-
-        if (paciente == null)
+        public PacienteController(IPacienteService pacienteService)
         {
-            return NotFound();
+            _pacienteService = pacienteService;
         }
 
-        return paciente;
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<PacienteModel>> AdicionarPaciente([FromBody] PacienteModel paciente)
-    {
-        _contexto.Paciente.Add(paciente);
-        await _contexto.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(ObterPacientePorId), new { id = paciente.Id }, paciente);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult AtualizarPaciente(int id, [FromBody] PacienteModel pacienteDados)
-    {
-        var paciente = _contexto.Paciente.FirstOrDefault(p => p.Id == id);
-        if (paciente == null)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Paciente>> Get(Guid id)
         {
-            return NotFound();
+            var paciente = await _pacienteService.ObterPacientePorId(id);
+            if (paciente == null)
+            {
+                return NotFound();
+            }
+
+            return paciente;
         }
 
-        // Atualize as propriedades relevantes do paciente com os dados fornecidos
-        paciente.Nome = pacienteDados.Nome;
-        paciente.Telefone = pacienteDados.Telefone;
-
-        _contexto.SaveChanges();
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> RemoverPaciente(int id)
-    {
-        var paciente = await _contexto.Paciente.FindAsync(id);
-        if (paciente == null)
+        [HttpGet]
+        public async Task<ActionResult<List<Paciente>>> Get()
         {
-            return NotFound();
+            var pacientes = await _pacienteService.ObterPacientes();
+            return pacientes;
         }
 
-        _contexto.Paciente.Remove(paciente);
-        await _contexto.SaveChangesAsync();
+        [HttpPost]
+        public async Task<ActionResult<Paciente>> Post(Paciente paciente)
+        {
+            try
+            {
+                var novoPaciente = await _pacienteService.AdicionarPaciente(paciente);
+                return CreatedAtAction(nameof(Get), new { id = novoPaciente.Id }, novoPaciente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        return NoContent();
-    }
-    private bool PacienteExists(int id)
-    {
-        return _contexto.Paciente.Any(e => e.Id == id);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, Paciente paciente)
+        {
+            if (id != paciente.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _pacienteService.AtualizarPaciente(paciente, id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _pacienteService.RemoverPaciente(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return NoContent();
+        }
     }
 }
+/*
+private readonly PacienteService _pacienteService;
+
+public PacienteController(PacienteService pacienteService)
+{
+    _pacienteService = pacienteService;
+}
+
+[HttpGet]
+public IActionResult ObterPacientes()
+{
+    var pacientes = _pacienteService.ObterPacientes();
+    return Ok(pacientes);
+}
+
+[HttpGet("{id}")]
+public IActionResult ObterPacientePorId(Guid id)
+{
+    var paciente = _pacienteService.ObterPacientePorId(id);
+    if (paciente == null)
+    {
+        return NotFound();
+    }
+    return Ok(paciente);
+}
+
+[HttpPost]
+public IActionResult AdicionarPaciente(Paciente paciente)
+{
+    _pacienteService.AdicionarPaciente(paciente);
+    return CreatedAtAction(nameof(ObterPacientePorId), new { id = paciente.Id }, paciente);
+}
+
+[HttpPut("{id}")]
+public IActionResult AtualizarPaciente(Guid id, Paciente paciente)
+{
+    var existingPaciente = _pacienteService.ObterPacientePorId(id);
+    if (existingPaciente == null)
+    {
+        return NotFound();
+    }
+    _pacienteService.AtualizarPaciente(paciente);
+    return NoContent();
+}
+
+[HttpDelete("{id}")]
+public IActionResult RemoverPaciente(Guid id)
+{
+    var existingPaciente = _pacienteService.ObterPacientePorId(id);
+    if (existingPaciente == null)
+    {
+        return NotFound();
+    }
+    _pacienteService.RemoverPaciente(id);
+    return NoContent();
+}
+}
+
+
+*/
+
 
 

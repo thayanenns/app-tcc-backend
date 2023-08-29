@@ -1,37 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppTccBackend.Models;
+using AppTccBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppTccBackend.Controllers
 {
-    using AppTccBackend.Data;
-    using AppTccBackend.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
     [ApiController]
     [Route("api/[controller]")]
     public class MedicoController : ControllerBase
     {
-        private readonly ApiContexto _contexto;
+        private readonly IMedicoService _medicoService;
 
-        public MedicoController(ApiContexto contexto)
+        public MedicoController(IMedicoService medicoService)
         {
-            _contexto = contexto;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MedicoModel>>> ObterMedicos()
-        {
-            return await _contexto.Medico.ToListAsync();
+            _medicoService = medicoService;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<MedicoModel>> ObterMedicoPorId(int id)
+        public async Task<ActionResult<Medico>> Get(Guid id)
         {
-            var medico = await _contexto.Medico.FindAsync(id);
-
+            var medico = await _medicoService.ObterMedicoPorId(id);
             if (medico == null)
             {
                 return NotFound();
@@ -40,63 +27,60 @@ namespace AppTccBackend.Controllers
             return medico;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MedicoModel>> AdicionarMedico([FromBody] MedicoModel medico)
-         {
-             _contexto.Medico.Add(medico);
-             await _contexto.SaveChangesAsync();
-
-             return CreatedAtAction(nameof(ObterMedicoPorId), new { id = medico.Id }, medico);
-         }
-
-         [HttpPut("{id}")]
-         public async Task<IActionResult> AtualizarMedico(int id, [FromBody] MedicoModel medico)
-         {
-             if (id != medico.Id)
-             {
-                 return BadRequest();
-             }
-
-             _contexto.Entry(medico).State = EntityState.Modified;
-
-             try
-             {
-                 await _contexto.SaveChangesAsync();
-             }
-             catch (DbUpdateConcurrencyException)
-             {
-                 if (!MedicoExists(id))
-                 {
-                     return NotFound();
-                 }
-                 else
-                 {
-                     throw;
-                 }
-             }
-
-             return NoContent();
-         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoverMedico(int id)
+        [HttpGet]
+        public async Task<ActionResult<List<Medico>>> Get()
         {
-            var medico = await _contexto.Medico.FindAsync(id);
-            if (medico == null)
+            var medicos = await _medicoService.ObterMedicos();
+            return medicos;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Medico>> Post(Medico medico)
+        {
+            try
             {
-                return NotFound();
+                var novoMedico = await _medicoService.AdicionarMedico(medico);
+                return CreatedAtAction(nameof(Get), new { id = novoMedico.Id }, novoMedico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, Medico medico)
+        {
+            if (id != medico.Id)
+            {
+                return BadRequest();
             }
 
-            _contexto.Medico.Remove(medico);
-            await _contexto.SaveChangesAsync();
+            try
+            {
+                await _medicoService.AtualizarMedico(medico, id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return NoContent();
         }
 
-        private bool MedicoExists(int id)
-           {
-               return _contexto.Medico.Any(e => e.Id == id);
-           }
-       }
-      
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _medicoService.RemoverMedico(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return NoContent();
+        }
+    }
 }
