@@ -28,7 +28,7 @@ namespace AppTccBackend.Data.Repositories
 
         public async Task<Medico> AdicionarMedico(Medico medico)
         {
-            _context.Usuarios.Add(medico);
+            await _context.Usuarios.AddAsync(medico);
             await _context.SaveChangesAsync();
             return medico;
         }
