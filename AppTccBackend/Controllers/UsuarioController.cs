@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AppTccBackend.Models;
 using AppTccBackend.Services.Interfaces;
+using AppTccBackend.Enum;
+using AppTccBackend.Models.Dtos;
 
 namespace AppTccBackend.Controllers
 {
@@ -82,6 +84,35 @@ namespace AppTccBackend.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{id}/Detalhes")]
+        public async Task<ActionResult<UsuarioDetalhesDto>> ObterDetalhesUsuario(Guid id)
+        {
+            var usuario = await _usuarioService.ObterUsuarioPorId(id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            // Verifique se o usuário é médico e obtenha o ID do médico associado
+            Guid? medicoId = null;
+            if (usuario is Medico medico)
+            {
+                medicoId = medico.Id;
+            }
+
+            var usuarioDetalhes = new UsuarioDetalhesDto
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                // Outras propriedades que você deseja retornar
+                MedicoId = medicoId
+            };
+
+            return Ok(usuarioDetalhes);
+        }
+
     }
 }
 

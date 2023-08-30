@@ -27,13 +27,21 @@ namespace AppTccBackend.Controllers
 
             return paciente;
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<Paciente>>> Get()
+        public async Task<ActionResult<List<Paciente>>> Get(Guid? medicoId)
         {
-            var pacientes = await _pacienteService.ObterPacientes();
-            return pacientes;
+            if (medicoId.HasValue)
+            {
+                var pacientesDoMedico = await _pacienteService.ObterPacientesDoMedico(medicoId.Value);
+                return pacientesDoMedico;
+            }
+            else
+            {
+                var pacientes = await _pacienteService.ObterPacientes();
+                return pacientes;
+            }
         }
+
 
         [HttpPost]
         public async Task<ActionResult<Paciente>> Post(Paciente paciente)

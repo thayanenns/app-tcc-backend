@@ -75,9 +75,12 @@ namespace AppTccBackend.Data.Repositories
             return usuario;
         }
 
-        public Task<Usuario> ObterUsuarioPorEmail(string email)
+        public async Task<Usuario> ObterUsuarioPorEmail(string email)
         {
-            throw new NotImplementedException();
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+
+            return usuario;
         }
+
     }
 }

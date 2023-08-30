@@ -9,5 +9,8 @@ namespace AppTccBackend.Services.Interfaces
         Task<Paciente> AdicionarPaciente(Paciente paciente);
         Task<Paciente> AtualizarPaciente(Paciente paciente, Guid id);
         Task<bool> RemoverPaciente(Guid id);
+
+        Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId);
+
     }
 }

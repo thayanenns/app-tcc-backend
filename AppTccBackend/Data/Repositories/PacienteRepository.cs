@@ -1,4 +1,5 @@
 ﻿using AppTccBackend.Data.Repositories.Interfaces;
+using AppTccBackend.Enum;
 using AppTccBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,6 +62,19 @@ namespace AppTccBackend.Data.Repositories
 
             return true;
         }
+
+        public async Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId)
+        {
+            var pacientesDoMedico = await _context.Usuarios
+                .OfType<Paciente>() // Filtrar apenas os registros que são do tipo Paciente
+                .Where(p => p.MedicoId == medicoId) // Filtrar por médicoId
+                .ToListAsync();
+
+            return pacientesDoMedico;
+        }
+
+
+
 
     }
 

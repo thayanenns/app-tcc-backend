@@ -1,6 +1,7 @@
 ﻿using AppTccBackend.Data.Repositories.Interfaces;
 using AppTccBackend.Models;
 using AppTccBackend.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppTccBackend.Services
 {
@@ -79,5 +80,11 @@ namespace AppTccBackend.Services
                 throw;
             }
         }
+
+        public async Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId)
+        {
+            return await _pacienteRepository.ObterPacientesDoMedico(medicoId);
+        }
+
     }
 }
