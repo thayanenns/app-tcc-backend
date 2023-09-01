@@ -1,8 +1,8 @@
 ﻿using AppTccBackend.Models;
 
-namespace AppTccBackend.Data.Repositories.Interfaces
+namespace AppTccBackend.Services.Interfaces
 {
-    public interface IMedicaoRepository
+    public interface IMedicaoService
     {
         Task<List<Medicao>> ObterMedicoes();
         Task<Medicao> ObterMedicaoPorId(Guid id);

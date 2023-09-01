@@ -25,6 +25,9 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 
+builder.Services.AddScoped<IMedicaoRepository, MedicaoRepository>();
+builder.Services.AddScoped<IMedicaoService, MedicaoService>();
+
 builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 builder.Services.AddScoped<IMedicoService, MedicoService>();
 
