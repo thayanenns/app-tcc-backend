@@ -10,8 +10,5 @@ namespace AppTccBackend.Models
         [InverseProperty("Medico")]
 
         public ICollection<Paciente>? Pacientes { get; set;}
-
-        
-
     }
 }

@@ -24,7 +24,6 @@ namespace AppTccBackend.Controllers
             _loginService = loginService;
         }
        
-        
         [HttpPost]
         public async Task<IActionResult> Autenticar(LoginDto loginDto)
         {

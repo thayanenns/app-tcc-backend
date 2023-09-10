@@ -38,7 +38,6 @@ namespace AppTccBackend.Data.Repositories
                 throw new Exception("Medição não encontrado no banco");
             }
 
-            // Atualize as propriedades necessárias
             medicaoBuscado.PressaoSistolica = medicao.PressaoSistolica;
             medicaoBuscado.PressaoDiastolica = medicao.PressaoDiastolica;
 

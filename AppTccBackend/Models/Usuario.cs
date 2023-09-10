@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppTccBackend.Models
 {
-    //abstract
     public abstract class Usuario
     {
         [Key]
@@ -26,11 +25,7 @@ namespace AppTccBackend.Models
             return Senha == senha;
         }
 
-        public Usuario()
-        {
-            // Construtor vazio
-        }
+        public Usuario(){}
 
     }
-    //colocar required nos campos depois
 }

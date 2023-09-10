@@ -39,7 +39,6 @@ namespace AppTccBackend.Data.Repositories
                 throw new Exception("Paciente não encontrado no banco");
             }
 
-            // Atualize as propriedades necessárias
             pacienteBuscado.Nome = paciente.Nome;
             pacienteBuscado.Telefone = paciente.Telefone;
 
@@ -66,16 +65,11 @@ namespace AppTccBackend.Data.Repositories
         public async Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId)
         {
             var pacientesDoMedico = await _context.Usuarios
-                .OfType<Paciente>() // Filtrar apenas os registros que são do tipo Paciente
-                .Where(p => p.MedicoId == medicoId) // Filtrar por médicoId
+                .OfType<Paciente>() 
+                .Where(p => p.MedicoId == medicoId) 
                 .ToListAsync();
 
             return pacientesDoMedico;
         }
-
-
-
-
     }
-
 }

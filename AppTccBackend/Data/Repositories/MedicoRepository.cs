@@ -41,9 +41,7 @@ namespace AppTccBackend.Data.Repositories
                 throw new Exception("Médico não encontrado no banco");
             }
 
-            // Atualizar as propriedades de Medico aqui
             medicoBuscado.Nome = medico.Nome;
-            // Atualize outras propriedades conforme necessário
 
             _context.Entry(medicoBuscado).State = EntityState.Modified;
             await _context.SaveChangesAsync();

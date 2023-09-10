@@ -28,6 +28,7 @@ namespace AppTccBackend.Controllers
 
             return medicao;
         }
+
         [HttpGet]
         public async Task<ActionResult<List<Medicao>>> Get(Guid? pacienteId)
         {
@@ -91,25 +92,7 @@ namespace AppTccBackend.Controllers
 
             return NoContent();
         }
-        /*
-        [HttpGet("dia/{pacienteId}")]
-        public async Task<ActionResult<List<MedicaoPorDiaDto>>> ObterMedicoesPorDia(Guid pacienteId)
-        {
-            var medicoes = await _medicaoService.ObterMedicoesDoPaciente(pacienteId);
-
-            var medicoesPorDia = medicoes
-                .GroupBy(m => m.DataMedicao.Date)
-                .Select(group => new MedicaoPorDiaDto
-                {
-                    DataDia = group.Key,
-                    Medicoes = group.ToList()
-                })
-                .OrderByDescending(dto => dto.DataDia)
-                .ToList();
-
-            return medicoesPorDia;
-        }
-        */
+      
         [HttpGet("dia/{pacienteId}")]
         public async Task<ActionResult<List<MedicaoPorDiaDto>>> ObterMedicoesPorDia(Guid pacienteId)
         {

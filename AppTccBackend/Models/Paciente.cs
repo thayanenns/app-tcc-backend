@@ -9,11 +9,7 @@ namespace AppTccBackend.Models
     {
         public Medico? Medico { get; set; }
         [ForeignKey("Medico")]
-
         public Guid? MedicoId { get; set; }
-
-        public ICollection<Medicao>? Medicoes { get; set; }
-
-        
+        public ICollection<Medicao>? Medicoes { get; set; } 
     }
 }

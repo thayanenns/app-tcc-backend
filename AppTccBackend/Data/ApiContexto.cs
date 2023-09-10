@@ -22,8 +22,6 @@ namespace AppTccBackend.Data
             .HasValue<Medico>(0)
             .HasValue<Paciente>(1);
 
-            // Suas outras configurações
-
             base.OnModelCreating(modelBuilder);
         }
 

@@ -38,7 +38,6 @@ namespace AppTccBackend.Data.Repositories
             {
                 throw new Exception("Usuário não encontrado no banco");
             }
-            //colocar o resto dos atributos atualizaveis
             usuarioBuscado.Nome = usuario.Nome;
             usuarioBuscado.Telefone = usuario.Telefone;
 
@@ -81,6 +80,5 @@ namespace AppTccBackend.Data.Repositories
 
             return usuario;
         }
-
     }
 }
