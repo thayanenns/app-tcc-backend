@@ -10,6 +10,7 @@ namespace AppTccBackend.Data.Map
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.DataMedicao).IsRequired();
+            builder.Property(e => e.Batimentos).IsRequired();
             builder.Property(e => e.Glicemia).IsRequired();
             builder.Property(e => e.PressaoSistolica).IsRequired();
             builder.Property(e => e.PressaoDiastolica).IsRequired();
