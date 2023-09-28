@@ -32,7 +32,7 @@ namespace AppTccBackend.Controllers
         {
             if (medicoId.HasValue)
             {
-                var pacientesDoMedico = await _pacienteService.ObterPacientesDoMedico(medicoId.Value);
+                var pacientesDoMedico = await _pacienteService.ObterPacientesPorMedico(medicoId.Value);
                 return pacientesDoMedico;
             }
             else

@@ -62,7 +62,7 @@ namespace AppTccBackend.Data.Repositories
             return true;
         }
 
-        public async Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId)
+        public async Task<List<Paciente>> ObterPacientesPorMedico(Guid medicoId)
         {
             var pacientesDoMedico = await _context.Usuarios
                 .OfType<Paciente>() 

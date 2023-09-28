@@ -10,7 +10,7 @@ namespace AppTccBackend.Data.Repositories.Interfaces
         Task<Paciente> AtualizarPaciente(Paciente paciente, Guid id);
         Task<bool> RemoverPaciente(Guid id);
 
-        Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId);
+        Task<List<Paciente>> ObterPacientesPorMedico(Guid medicoId);
 
     }
 }

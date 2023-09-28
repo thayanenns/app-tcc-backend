@@ -81,9 +81,9 @@ namespace AppTccBackend.Services
             }
         }
 
-        public async Task<List<Paciente>> ObterPacientesDoMedico(Guid medicoId)
+        public async Task<List<Paciente>> ObterPacientesPorMedico(Guid medicoId)
         {
-            return await _pacienteRepository.ObterPacientesDoMedico(medicoId);
+            return await _pacienteRepository.ObterPacientesPorMedico(medicoId);
         }
 
     }

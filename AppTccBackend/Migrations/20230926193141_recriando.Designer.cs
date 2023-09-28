@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppTccBackend.Migrations
 {
     [DbContext(typeof(ApiContexto))]
-    [Migration("20230912043856_adicionandoBatimentos")]
-    partial class adicionandoBatimentos
+    [Migration("20230926193141_recriando")]
+    partial class recriando
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace AppTccBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Altura")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Batimentos")
                         .HasColumnType("integer");
 
@@ -45,6 +48,9 @@ namespace AppTccBackend.Migrations
 
                     b.Property<Guid>("PacienteId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Peso")
+                        .HasColumnType("integer");
 
                     b.Property<int>("PressaoDiastolica")
                         .HasColumnType("integer");
@@ -67,6 +73,10 @@ namespace AppTccBackend.Migrations
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Domicilio")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -120,6 +130,9 @@ namespace AppTccBackend.Migrations
 
                     b.Property<Guid?>("MedicoId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("TipoDiabetes")
+                        .HasColumnType("integer");
 
                     b.HasIndex("MedicoId");
 

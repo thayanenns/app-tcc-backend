@@ -15,6 +15,8 @@ namespace AppTccBackend.Data.Map
             builder.Property(e => e.PressaoSistolica).IsRequired();
             builder.Property(e => e.PressaoDiastolica).IsRequired();
             builder.Property(e => e.EmJejum).IsRequired();
+            builder.Property(e => e.Peso).IsRequired();
+            builder.Property(e => e.Altura).IsRequired();
             builder.HasOne(e => e.Paciente)
                    .WithMany(p => p.Medicoes)
                    .HasForeignKey(e => e.PacienteId)

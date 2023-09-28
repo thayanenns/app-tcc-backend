@@ -14,6 +14,8 @@ namespace AppTccBackend.Models
         public string Sexo { get; set; }
 
         public string Telefone { get; set; }
+
+        public string Domicilio { get; set; }     
         public string Email { get; set; }
 
         public string Senha { get; set; }

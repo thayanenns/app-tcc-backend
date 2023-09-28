@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppTccBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class ajustandoEstruturaNovamente2 : Migration
+    public partial class recriando : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,11 +20,14 @@ namespace AppTccBackend.Migrations
                     DataNascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Sexo = table.Column<string>(type: "text", nullable: false),
                     Telefone = table.Column<string>(type: "text", nullable: false),
+                    Domicilio = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Senha = table.Column<string>(type: "text", nullable: false),
                     Tipo = table.Column<int>(type: "integer", nullable: false),
+                    TipoUsuario = table.Column<int>(type: "integer", nullable: false),
                     Crm = table.Column<string>(type: "text", nullable: true),
-                    MedicoId = table.Column<Guid>(type: "uuid", nullable: true)
+                    MedicoId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TipoDiabetes = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,8 +36,7 @@ namespace AppTccBackend.Migrations
                         name: "FK_Usuarios_Usuarios_MedicoId",
                         column: x => x.MedicoId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -43,10 +45,13 @@ namespace AppTccBackend.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DataMedicao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Glicemia = table.Column<int>(type: "integer", nullable: false),
+                    Batimentos = table.Column<int>(type: "integer", nullable: false),
                     PressaoSistolica = table.Column<int>(type: "integer", nullable: false),
                     PressaoDiastolica = table.Column<int>(type: "integer", nullable: false),
+                    Glicemia = table.Column<int>(type: "integer", nullable: false),
                     EmJejum = table.Column<bool>(type: "boolean", nullable: false),
+                    Peso = table.Column<int>(type: "integer", nullable: false),
+                    Altura = table.Column<int>(type: "integer", nullable: false),
                     PacienteId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
